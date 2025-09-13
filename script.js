@@ -190,7 +190,7 @@ function createCardElement(item) {
         const img = document.createElement('img');
         img.src = thumbUrl;
         img.alt = item.title;
-        img.className = 'card-img-top';
+        img.className = 'card-img-top w-100';
         img.onerror = () => {
             console.log('TikTok image load failed, setting placeholder');
             img.src = 'https://via.placeholder.com/300x200/000000/FFFFFF?text=TikTok+Video';
