@@ -11,6 +11,11 @@
 body.light-mode {
   background-color: var(--light-bg);
   color: var(--light-text);
+  padding-top: 56px; /* Height of fixed navbar */
+}
+
+body.dark-mode {
+  padding-top: 56px; /* Height of fixed navbar */
 }
 
 body.dark-mode {
