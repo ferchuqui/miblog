@@ -1,0 +1,224 @@
+/* Custom Styles for Recuerdos de Noticias */
+
+:root {
+  --primary-color: #007bff;
+  --dark-bg: #212529;
+  --dark-text: #f8f9fa;
+  --light-bg: #ffffff;
+  --light-text: #212529;
+}
+
+body.light-mode {
+  background-color: var(--light-bg);
+  color: var(--light-text);
+}
+
+body.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+body.dark-mode .navbar-light {
+  background-color: #343a40 !important;
+  border-bottom: 1px solid #495057;
+}
+
+body.dark-mode .navbar-light .navbar-brand,
+body.dark-mode .navbar-light .nav-link {
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .card {
+  background-color: #343a40;
+  border-color: #495057;
+  color: var(--dark-text);
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #495057;
+  border-color: #6c757d;
+  color: var(--dark-text);
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+  background-color: #495057;
+  border-color: var(--primary-color);
+  color: var(--dark-text);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+body.dark-mode .modal-content {
+  background-color: #343a40;
+  color: var(--dark-text);
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+  border-color: #495057;
+}
+
+body.dark-mode #noCards {
+  color: #adb5bd;
+}
+
+/* Card Styles */
+.annotation-card, .news-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.annotation-card:hover, .news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.annotation-card img, .news-card img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.annotation-card .card-title, .news-card .card-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.annotation-card .category-badge, .news-card .category-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.annotation-card .date, .news-card .date {
+  font-size: 0.875em;
+  color: #6c757d;
+}
+
+.annotation-card .summary, .news-card .summary {
+  font-size: 0.9em;
+  color: #6c757d;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+body.dark-mode .annotation-card .date, body.dark-mode .news-card .date,
+body.dark-mode .annotation-card .summary, body.dark-mode .news-card .summary {
+  color: #adb5bd;
+}
+
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.embed-responsive::before {
+  display: block;
+  content: '';
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.embed-responsive-item,
+.embed-responsive iframe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.twitter-tweet {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+  min-height: 200px;
+}
+
+.twitter-tweet img {
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* YouTube Embed Overlay */
+.youtube-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  margin-bottom: 1rem;
+}
+
+.youtube-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.youtube-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.youtube-overlay:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.play-icon {
+  font-size: 4rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .play-icon {
+    font-size: 3rem;
+  }
+
+  .twitter-tweet {
+    min-height: 150px;
+  }
+}
+
+/* Loading Spinner */
+.loading {
+  display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .annotation-card img, .news-card img {
+    max-height: 250px;
+  }
+  
+  #cards-container .col-md-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .embed-responsive iframe {
+    height: 200px !important;
+  }
+}
