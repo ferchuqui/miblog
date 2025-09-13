@@ -182,11 +182,20 @@ function createCardElement(item) {
 
     // Add embeds for video/social platforms (no static image for videos)
     if (isTikTok) {
+        console.log('TikTok card - link:', item.link, 'image:', item.image);
         const videoId = item.link.split('/').pop().split('?')[0];
-        const embedDiv = document.createElement('div');
-        embedDiv.className = 'embed-responsive embed-responsive-16by9 mb-3';
-        embedDiv.innerHTML = `<iframe class="embed-responsive-item" src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="300" frameborder="0" allowfullscreen></iframe>`;
-        mediaElements.push(embedDiv);
+        console.log('TikTok videoId:', videoId);
+        const thumbUrl = item.image || `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
+        console.log('TikTok thumbUrl:', thumbUrl);
+        const img = document.createElement('img');
+        img.src = thumbUrl;
+        img.alt = item.title;
+        img.className = 'card-img-top';
+        img.onerror = () => {
+            console.log('TikTok image load failed, setting placeholder');
+            img.src = 'https://via.placeholder.com/300x200/000000/FFFFFF?text=TikTok+Video';
+        };
+        mediaElements.push(img);
     } else if (isYouTube) {
         if (item.image) {
             const container = document.createElement('div');
@@ -399,16 +408,36 @@ function extractFromUrl() {
 
     // Detect TikTok
     if (url.includes('tiktok.com')) {
+        urlLoading.classList.remove('d-none');
+        urlError.classList.add('d-none');
         const videoId = url.split('/').pop().split('?')[0];
+        console.log('TikTok extraction - url:', url, 'videoId:', videoId);
         newsTitle.value = 'TikTok Video';
-        newsImage.value = `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
         newsSummary.value = 'Video de TikTok - agrega descripción manual.';
         newsLink.value = url;
+        // Use TikTok oEmbed for reliable thumbnail
+        const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
+        const proxyOembed = `https://api.allorigins.win/get?url=${encodeURIComponent(oembedUrl)}`;
+        fetch(proxyOembed)
+            .then(res => res.json())
+            .then(data => {
+                const oembedData = JSON.parse(data.contents);
+                const thumbUrl = oembedData.thumbnail_url || `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
+                newsImage.value = thumbUrl;
+                console.log('TikTok oEmbed thumbnail:', thumbUrl);
+                urlLoading.classList.add('d-none');
+            })
+            .catch(err => {
+                console.error('TikTok oEmbed error:', err);
+                const thumbUrl = `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
+                newsImage.value = thumbUrl;
+                console.log('TikTok fallback thumbUrl:', thumbUrl);
+                urlLoading.classList.add('d-none');
+            });
         urlError.textContent = 'Para TikTok, personaliza el título y resumen manualmente.';
         urlError.classList.remove('d-none');
         document.getElementById('manual').checked = true;
         toggleMethod();
-        urlLoading.classList.add('d-none');
         return;
     }
 
