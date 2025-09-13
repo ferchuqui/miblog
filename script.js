@@ -412,32 +412,30 @@ function extractFromUrl() {
         urlError.classList.add('d-none');
         const videoId = url.split('/').pop().split('?')[0];
         console.log('TikTok extraction - url:', url, 'videoId:', videoId);
-        newsTitle.value = 'TikTok Video';
-        newsSummary.value = 'Video de TikTok - agrega descripción manual.';
         newsLink.value = url;
-        // Use TikTok oEmbed for reliable thumbnail
+        // Use TikTok oEmbed for real data
         const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
         const proxyOembed = `https://api.allorigins.win/get?url=${encodeURIComponent(oembedUrl)}`;
         fetch(proxyOembed)
             .then(res => res.json())
             .then(data => {
                 const oembedData = JSON.parse(data.contents);
-                const thumbUrl = oembedData.thumbnail_url || `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
-                newsImage.value = thumbUrl;
-                console.log('TikTok oEmbed thumbnail:', thumbUrl);
+                newsTitle.value = oembedData.title || 'TikTok Video';
+                newsImage.value = oembedData.thumbnail_url || `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
+                newsSummary.value = oembedData.description || 'Video de TikTok';
+                console.log('TikTok oEmbed data:', oembedData);
                 urlLoading.classList.add('d-none');
             })
             .catch(err => {
                 console.error('TikTok oEmbed error:', err);
-                const thumbUrl = `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
-                newsImage.value = thumbUrl;
-                console.log('TikTok fallback thumbUrl:', thumbUrl);
+                newsTitle.value = 'TikTok Video';
+                newsImage.value = `https://www.tiktok.com/thumb/v2/${videoId}?width=300&height=200`;
+                newsSummary.value = 'Video de TikTok - error al extraer datos.';
                 urlLoading.classList.add('d-none');
             });
-        urlError.textContent = 'Para TikTok, personaliza el título y resumen manualmente.';
+        urlError.textContent = 'Datos extraídos de TikTok. Personaliza si es necesario.';
         urlError.classList.remove('d-none');
-        document.getElementById('manual').checked = true;
-        toggleMethod();
+        // Stay in URL mode to preserve data
         return;
     }
 
