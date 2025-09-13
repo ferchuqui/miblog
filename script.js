@@ -280,6 +280,9 @@ function openAddModal() {
     document.getElementById('newsModalLabel').textContent = 'Agregar Anotación';
     editId.value = '';
     resetForm();
+    // Set URL mode as default for adding
+    document.getElementById('url').checked = true;
+    toggleMethod();
     newsModal.show();
 }
 
@@ -369,7 +372,8 @@ function resetForm() {
     newsSummary.value = '';
     urlError.classList.add('d-none');
     urlLoading.classList.add('d-none');
-    document.getElementById('manual').checked = true;
+    // Set URL mode as default
+    document.getElementById('url').checked = true;
     toggleMethod();
 }
 
